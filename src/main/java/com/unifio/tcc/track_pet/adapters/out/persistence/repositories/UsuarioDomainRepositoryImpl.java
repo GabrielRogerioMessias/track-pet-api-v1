@@ -19,7 +19,7 @@ public class UsuarioDomainRepositoryImpl implements UsuarioDomainRepository {
     }
 
     @Override
-    public Usuario save(Usuario u) {
+    public Usuario salvar(Usuario u) {
         UsuarioEntityJpa usuarioEntityJpa = usuarioMapper.toJpa(u);
         return usuarioMapper.toDomain(usuarioJpaRepository.save(usuarioEntityJpa));
     }

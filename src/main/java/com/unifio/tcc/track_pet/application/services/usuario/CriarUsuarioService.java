@@ -25,6 +25,6 @@ public class CriarUsuarioService implements CriarUsuarioUseCase {
                 .numero(usuario.numero())
                 .telefone(usuario.telefone())
                 .build();
-        return usuarioRepository.save(novoUsuario);
+        return usuarioRepository.salvar(novoUsuario);
     }
 }

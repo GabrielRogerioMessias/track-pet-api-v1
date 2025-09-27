@@ -46,6 +46,6 @@ public class AuthService {
                 .numero(usuario.getNumero())
                 .telefone(usuario.getTelefone())
                 .build();
-        return usuarioRepository.save(usuarioRegistrado);
+        return usuarioRepository.salvar(usuarioRegistrado);
     }
 }
