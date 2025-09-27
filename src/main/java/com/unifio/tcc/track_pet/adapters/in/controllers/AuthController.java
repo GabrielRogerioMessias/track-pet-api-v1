@@ -5,6 +5,7 @@ import com.unifio.tcc.track_pet.adapters.in.dtos.UsuarioRegistrarDTO;
 import com.unifio.tcc.track_pet.application.services.auth.AuthService;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 import com.unifio.tcc.track_pet.infra.security.Token;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Token> login(@RequestBody LoginDadosDTO loginDadosDTO) {
+    public ResponseEntity<Token> login(@RequestBody @Valid LoginDadosDTO loginDadosDTO) {
         Token token = authService.login(loginDadosDTO);
         return ResponseEntity.ok(token);
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Void> registrar(@RequestBody UsuarioRegistrarDTO request) {
+    public ResponseEntity<Void> registrar(@RequestBody @Valid UsuarioRegistrarDTO request) {
         Usuario usuario = Usuario.builder()
                 .nome(request.getNome())
                 .sobrenome(request.getSobrenome())
