@@ -4,25 +4,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 public final class LeituraId {
-    private final UUID value;
+    private final Long value;
 
-    private LeituraId(UUID uuid) {
-        if (uuid == null) {
-            throw new IllegalArgumentException("Id da leitura não pode ser nulo.");
+    private LeituraId(Long id) {
+        this.value = id;
+    }
+
+    public static LeituraId of(Long value) {
+        if (value == null || value <= 0) {
+            throw new IllegalArgumentException("ID da Leitura deve ser um número positivo");
         }
-        this.value = uuid;
-    }
-
-    public static LeituraId generateId() {
-        return new LeituraId(UUID.randomUUID());
-    }
-
-    public static LeituraId of(String valueId) {
-        return new LeituraId(UUID.fromString(valueId));
-    }
-
-    public UUID getValue() {
-        return value;
+        return new LeituraId(value);
     }
 
     @Override
