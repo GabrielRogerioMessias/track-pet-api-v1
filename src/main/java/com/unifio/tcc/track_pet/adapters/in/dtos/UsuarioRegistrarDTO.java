@@ -3,7 +3,7 @@ package com.unifio.tcc.track_pet.adapters.in.dtos;
 import lombok.Data;
 
 @Data
-public class UsuarioRegistrarDto {
+public class UsuarioRegistrarDTO {
     private String nome;
     private String sobrenome;
     private String email;
