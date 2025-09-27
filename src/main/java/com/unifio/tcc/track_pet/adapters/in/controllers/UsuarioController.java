@@ -1,10 +1,9 @@
 package com.unifio.tcc.track_pet.adapters.in.controllers;
 
-import com.unifio.tcc.track_pet.adapters.in.dtos.UsuarioRegistrarDto;
-import com.unifio.tcc.track_pet.adapters.in.mappers.UsuarioDtoMapper;
-import com.unifio.tcc.track_pet.application.services.CriarUsuarioService;
+import com.unifio.tcc.track_pet.adapters.in.dtos.UsuarioRegistrarDTO;
+import com.unifio.tcc.track_pet.adapters.in.mappers.UsuarioDTOMapper;
+import com.unifio.tcc.track_pet.application.services.usuario.CriarUsuarioService;
 import com.unifio.tcc.track_pet.domain.usecases.usuario.CriarUsuarioUseCase;
-import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,15 +16,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = "/usuarios", produces = APPLICATION_JSON_VALUE)
 public class UsuarioController {
     private final CriarUsuarioService criarUsuarioService;
-    private final UsuarioDtoMapper usuarioDtoMapper;
+    private final UsuarioDTOMapper usuarioDtoMapper;
 
-    public UsuarioController(CriarUsuarioService criarUsuarioService, UsuarioDtoMapper usuarioDtoMapper) {
+    public UsuarioController(CriarUsuarioService criarUsuarioService, UsuarioDTOMapper usuarioDtoMapper) {
         this.criarUsuarioService = criarUsuarioService;
         this.usuarioDtoMapper = usuarioDtoMapper;
     }
 
     @PostMapping
-    public ResponseEntity<Void> registrar(@RequestBody UsuarioRegistrarDto request) {
+    public ResponseEntity<Void> registrar(@RequestBody UsuarioRegistrarDTO request) {
         criarUsuarioService.criar(
                 new CriarUsuarioUseCase.criarUsuarioCommand(
                         request.getNome(),

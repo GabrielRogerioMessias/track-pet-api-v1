@@ -1,12 +1,9 @@
-package com.unifio.tcc.track_pet.domain.repositories;
-
+package com.unifio.tcc.track_pet.domain.usecases.usuario;
 
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 
 import java.util.Optional;
 
-public interface UsuarioRepository {
-    Usuario save(Usuario u);
-
+public interface BuscarUsuarioEmailUseCase {
     Optional<Usuario> buscarUsuarioEmail(String email);
 }

@@ -1,4 +1,4 @@
-package com.unifio.tcc.track_pet.application.services;
+package com.unifio.tcc.track_pet.application.services.usuario;
 
 import com.unifio.tcc.track_pet.domain.repositories.UsuarioRepository;
 import com.unifio.tcc.track_pet.domain.usecases.usuario.CriarUsuarioUseCase;
@@ -12,7 +12,7 @@ public class CriarUsuarioService implements CriarUsuarioUseCase {
     public CriarUsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
-    
+
     @Override
     public Usuario criar(criarUsuarioCommand usuario) {
         Usuario novoUsuario = Usuario.builder()
