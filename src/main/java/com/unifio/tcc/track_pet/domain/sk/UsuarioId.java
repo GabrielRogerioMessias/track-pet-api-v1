@@ -7,19 +7,24 @@ public final class UsuarioId {
     private final UUID value;
 
     private UsuarioId(UUID value) {
-        if (value == null){
+        if (value == null) {
             throw new IllegalArgumentException("Usuario id não pode ser nulo.");
         }
-        this.value = value;}
+        this.value = value;
+    }
+
     public static UsuarioId genereId() {
         return new UsuarioId(UUID.randomUUID());
     }
+
     public static UsuarioId of(UUID value) {
         return new UsuarioId(value);
     }
-    public static UsuarioId fromString(String s){
+
+    public static UsuarioId fromString(String s) {
         return new UsuarioId(UUID.fromString(s));
     }
+
     public UUID getValue() {
         return value;
     }

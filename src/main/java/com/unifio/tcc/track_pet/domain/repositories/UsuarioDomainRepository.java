@@ -5,8 +5,8 @@ import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 
 import java.util.Optional;
 
-public interface UsuarioRepository {
-    Usuario save(Usuario u);
+public interface UsuarioDomainRepository {
+    Usuario salvar(Usuario u);
 
     Optional<Usuario> buscarUsuarioEmail(String email);
 }

@@ -3,7 +3,7 @@ package com.unifio.tcc.track_pet.application.services.auth;
 import com.unifio.tcc.track_pet.adapters.in.dtos.LoginDadosDTO;
 import com.unifio.tcc.track_pet.application.services.exceptions.EntidadeNaoEncontradaException;
 import com.unifio.tcc.track_pet.application.services.exceptions.UsuarioJaRegistratoException;
-import com.unifio.tcc.track_pet.domain.repositories.UsuarioRepository;
+import com.unifio.tcc.track_pet.domain.repositories.UsuarioDomainRepository;
 import com.unifio.tcc.track_pet.domain.sk.UsuarioId;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 import com.unifio.tcc.track_pet.infra.security.Token;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioDomainRepository usuarioRepository;
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UsuarioRepository usuarioRepository, TokenService tokenService, PasswordEncoder passwordEncoder) {
+    public AuthService(UsuarioDomainRepository usuarioRepository, TokenService tokenService, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.tokenService = tokenService;
         this.passwordEncoder = passwordEncoder;
@@ -46,6 +46,6 @@ public class AuthService {
                 .numero(usuario.getNumero())
                 .telefone(usuario.getTelefone())
                 .build();
-        return usuarioRepository.save(usuarioRegistrado);
+        return usuarioRepository.salvar(usuarioRegistrado);
     }
 }

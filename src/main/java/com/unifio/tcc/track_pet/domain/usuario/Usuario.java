@@ -6,14 +6,14 @@ import java.util.Objects;
 
 public class Usuario {
     private final UsuarioId id;
-    private String nome;
-    private String sobrenome;
-    private String email;
-    private String senha;
-    private String cidade;
-    private String bairro;
-    private String numero;
-    private String telefone;
+    private final String nome;
+    private final String sobrenome;
+    private final String email;
+    private final String senha;
+    private final String cidade;
+    private final String bairro;
+    private final String numero;
+    private final String telefone;
 
     protected Usuario(UsuarioBuilder b) {
         this.id = Objects.requireNonNull(b.id, "id não pode ser nulo");
