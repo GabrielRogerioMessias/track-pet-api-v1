@@ -36,6 +36,13 @@ public class Animal {
         return new AnimalBuilder();
     }
 
+    public void atualizarPeso(Double peso) {
+        if (this.peso <= 0) {
+            throw new IllegalArgumentException("Peso inválido");
+        }
+        this.peso = peso;
+    }
+
     public AnimalId getId() {
         return id;
     }

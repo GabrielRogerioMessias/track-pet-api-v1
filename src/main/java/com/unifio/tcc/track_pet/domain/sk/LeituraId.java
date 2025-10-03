@@ -1,7 +1,6 @@
 package com.unifio.tcc.track_pet.domain.sk;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public final class LeituraId {
     private final Long value;
@@ -15,6 +14,10 @@ public final class LeituraId {
             throw new IllegalArgumentException("ID da Leitura deve ser um número positivo");
         }
         return new LeituraId(value);
+    }
+
+    public Long getValue() {
+        return value;
     }
 
     @Override

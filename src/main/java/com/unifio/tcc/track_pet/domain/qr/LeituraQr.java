@@ -12,7 +12,7 @@ public class LeituraQr {
     private LocalDateTime dataHora;
     private String latitude;
     private String longitude;
-    private String message;
+    private String mensagem;
 
     protected LeituraQr(LeituraBuilder b) {
         this.id = Objects.requireNonNull(b.id, "id não pode ser nulo.");
@@ -20,7 +20,7 @@ public class LeituraQr {
         this.dataHora = b.dataHora;
         this.latitude = b.latitude;
         this.longitude = b.longitude;
-        this.message = b.message;
+        this.mensagem = b.mensagem;
     }
 
     public static LeituraBuilder builder() {
@@ -47,8 +47,8 @@ public class LeituraQr {
         return longitude;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMensagem() {
+        return mensagem;
     }
 
     @Override

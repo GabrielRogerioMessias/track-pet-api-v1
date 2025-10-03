@@ -17,8 +17,8 @@ public final class AnimalId {
         return new AnimalId(UUID.randomUUID());
     }
 
-    public static AnimalId of(String value) {
-        return new AnimalId(UUID.fromString(value));
+    public static AnimalId of(UUID value) {
+        return new AnimalId(value);
     }
 
     public UUID getValue() {

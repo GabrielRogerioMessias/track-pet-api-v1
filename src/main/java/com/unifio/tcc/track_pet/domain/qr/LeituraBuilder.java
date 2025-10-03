@@ -11,7 +11,7 @@ public class LeituraBuilder {
     LocalDateTime dataHora;
     String latitude;
     String longitude;
-    String message;
+    String mensagem;
 
     public LeituraBuilder id(LeituraId id) {
         this.id = id;
@@ -39,7 +39,7 @@ public class LeituraBuilder {
     }
 
     public LeituraBuilder message(String message) {
-        this.message = message;
+        this.mensagem = message;
         return this;
     }
 
