@@ -1,12 +1,8 @@
 package com.unifio.tcc.track_pet.adapters.in.controllers;
 
-import com.unifio.tcc.track_pet.adapters.in.dtos.UsuarioRegistrarDTO;
+
 import com.unifio.tcc.track_pet.adapters.in.mappers.UsuarioDTOMapper;
 import com.unifio.tcc.track_pet.application.services.usuario.CriarUsuarioService;
-import com.unifio.tcc.track_pet.domain.usecases.usuario.CriarUsuarioUseCase;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,23 +17,6 @@ public class UsuarioController {
     public UsuarioController(CriarUsuarioService criarUsuarioService, UsuarioDTOMapper usuarioDtoMapper) {
         this.criarUsuarioService = criarUsuarioService;
         this.usuarioDtoMapper = usuarioDtoMapper;
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> registrar(@RequestBody UsuarioRegistrarDTO request) {
-        criarUsuarioService.criar(
-                new CriarUsuarioUseCase.criarUsuarioCommand(
-                        request.getNome(),
-                        request.getSobrenome(),
-                        request.getEmail(),
-                        request.getSenha(),
-                        request.getCidade(),
-                        request.getBairro(),
-                        request.getNumero(),
-                        request.getTelefone()
-                )
-        );
-        return ResponseEntity.ok().build();
     }
 
 }

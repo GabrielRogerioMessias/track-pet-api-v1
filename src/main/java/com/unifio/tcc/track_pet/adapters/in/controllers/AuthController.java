@@ -5,6 +5,7 @@ import com.unifio.tcc.track_pet.adapters.in.dtos.UsuarioRegistrarDTO;
 import com.unifio.tcc.track_pet.application.services.auth.AuthService;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 import com.unifio.tcc.track_pet.infra.security.Token;
+import com.unifio.tcc.track_pet.infra.security.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final TokenService tokenService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService,
+                          TokenService tokenService) {
         this.authService = authService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<Token> login(@RequestBody @Valid LoginDadosDTO loginDadosDTO) {
-        Token token = authService.login(loginDadosDTO);
+        Token token = null;
+        if (authService.login(loginDadosDTO.getEmail(), loginDadosDTO.getSenha())) {
+            Usuario usuario = Usuario.builder()
+                    .email(loginDadosDTO.getEmail())
+                    .senha(loginDadosDTO.getSenha())
+                    .build();
+            token = tokenService.generateToken(usuario);
+        }
+
         return ResponseEntity.ok(token);
     }
 
@@ -40,7 +52,7 @@ public class AuthController {
                 .numero(request.getNumero())
                 .telefone(request.getTelefone())
                 .build();
-        authService.registrarUsuario(usuario);
+        authService.criar(usuario);
         return ResponseEntity.ok().build();
     }
 
