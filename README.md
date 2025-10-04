@@ -1,17 +1,15 @@
 🐾 Track API - v0.1
+API para que usuários possam cadastrar seus pets e rastreá-los através do QR Code da coleira.
 
-API para que usuários possam cadastrar seus pets e rastreados através do QR Code da coleira.
 Esta é a versão 0.1, contendo funcionalidades iniciais de autenticação e gerenciamento de animais.
 
 🚀 Funcionalidades
 👤 Usuários
-
 Registrar novo usuário
 
 Fazer login e receber token JWT
 
 🐶 Pets
-
 Cadastrar pet
 
 Listar pets cadastrados
@@ -23,7 +21,6 @@ Excluir/Desativar pet por ID
 (Em desenvolvimento): rastreamento via scanner da coleira (QR Code)
 
 🛠️ Tecnologias
-
 Java 17
 
 Spring Boot
@@ -34,31 +31,31 @@ Docker & Docker Compose
 
 Swagger UI (documentação e testes de endpoints)
 
-📦 Como rodar o projeto
-
+📦 Como Rodar o Projeto
 Clone este repositório:
 
+Bash
+
 git clone https://github.com/seu-usuario/track-api.git
-
-
 Acesse a pasta do projeto:
 
+Bash
+
 cd track-api
-
-
 Tenha o Docker instalado e rodando.
 
 Execute o build e inicialização dos containers:
 
+Bash
+
 docker-compose up --build
-
-
 Acesse a documentação no navegador:
+
 👉 http://localhost:8080/swagger-ui/index.html#/
-
 ⚙️ Configuração do .env
-
 Crie um arquivo .env na raiz do projeto com as seguintes variáveis (use seus próprios dados):
+
+Ini, TOML
 
 # Banco de Dados Local
 DB_URL=jdbc:mysql://localhost:3306/[NOME DO SEU BANCO]
@@ -79,14 +76,12 @@ SPRING_PROFILES_ACTIVE=docker
 SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/track_api_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 SPRING_DATASOURCE_USERNAME=track_user
 SPRING_DATASOURCE_PASSWORD=senha
-
 📖 Documentação
-
 A API conta com uma interface Swagger para explorar e testar os endpoints disponíveis:
+
 👉 http://localhost:8080/swagger-ui/index.html#/
-
 📌 Status do Projeto
-
 🚧 Versão 0.1 - Em desenvolvimento
+
 Funcionalidades básicas de autenticação e gerenciamento de pets concluídas.
 Próxima etapa: integração com scanner QR Code da coleira para rastreamento.
