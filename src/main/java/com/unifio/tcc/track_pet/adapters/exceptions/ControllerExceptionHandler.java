@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -53,6 +54,18 @@ public class ControllerExceptionHandler {
                 errors.toString(),
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<StandardError> uuidInvalidoException(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+        String mensagemDeErro = "Entidade não encontrada!";
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        StandardError standardError = new StandardError(Instant.now(),
+                status.value(),
+                mensagemDeErro,
+                ex.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
     }
 
 }

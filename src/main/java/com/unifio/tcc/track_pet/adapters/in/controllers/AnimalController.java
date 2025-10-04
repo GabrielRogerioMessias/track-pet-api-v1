@@ -3,6 +3,7 @@ package com.unifio.tcc.track_pet.adapters.in.controllers;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRegistrarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRespostaDTO;
 import com.unifio.tcc.track_pet.adapters.in.mappers.AnimalDTOMapper;
+import com.unifio.tcc.track_pet.application.services.animal.BuscarAnimalPorIdService;
 import com.unifio.tcc.track_pet.application.services.animal.RegistrarAnimalService;
 import com.unifio.tcc.track_pet.domain.animal.Animal;
 import com.unifio.tcc.track_pet.domain.usecases.animal.ListarAnimalUseCase;
@@ -11,22 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "animal", produces = APPLICATION_JSON_VALUE)
 public class AnimalController {
+    private BuscarAnimalPorIdService buscarAnimalPorIdService;
     private ListarAnimalUseCase listarAnimalUseCase;
     private RegistrarAnimalService registrarAnimalService;
     private AnimalDTOMapper animalDTOMapper;
 
     public AnimalController(RegistrarAnimalService registrarAnimalService,
                             AnimalDTOMapper animalDTOMapper,
-                            ListarAnimalUseCase listarAnimalUseCase) {
+                            ListarAnimalUseCase listarAnimalUseCase,
+                            BuscarAnimalPorIdService buscarAnimalPorIdService) {
         this.registrarAnimalService = registrarAnimalService;
         this.animalDTOMapper = animalDTOMapper;
         this.listarAnimalUseCase = listarAnimalUseCase;
+        this.buscarAnimalPorIdService = buscarAnimalPorIdService;
     }
 
     @PostMapping
@@ -41,5 +46,10 @@ public class AnimalController {
         return ResponseEntity.ok().body(animais.stream()
                 .map(animalDTOMapper::domainToDto)
                 .toList());
+    }
+
+    @GetMapping(value = "/{idAnimal}")
+    public ResponseEntity<AnimalRespostaDTO> buscarAnimalPorId(@PathVariable UUID idAnimal) {
+        return ResponseEntity.ok().body(animalDTOMapper.domainToDto(buscarAnimalPorIdService.buscarAnimalPorId(idAnimal)));
     }
 }
