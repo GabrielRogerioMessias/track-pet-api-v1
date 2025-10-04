@@ -34,7 +34,7 @@ Esta é a **versão 0.1**, contendo funcionalidades iniciais de autenticação e
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/track-api.git
+   git clone git@github.com:GabrielRogerioMessias/track-pet-api-v1.git
 
 ---
 
