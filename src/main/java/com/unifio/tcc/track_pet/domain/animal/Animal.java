@@ -1,7 +1,9 @@
 package com.unifio.tcc.track_pet.domain.animal;
 
+import com.unifio.tcc.track_pet.domain.exceptions.AnimalJaDesativadoException;
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.sk.UsuarioId;
+import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -17,11 +19,12 @@ public class Animal {
     private String raca;
     private Sexo sexo;
     private String cor;
+    private Boolean ativo;
 
 
     protected Animal(AnimalBuilder builder) {
         this.id = Objects.requireNonNull(builder.id, "Id de animal não pode ser nulo.");
-        this.usuarioId = Objects.requireNonNull(builder.usuarioId, "usuarioId não pode ser nulo.");
+        this.usuarioId = builder.usuarioId;
         this.nome = Objects.requireNonNull(builder.nome, "Nome não pode ser nulo.");
         this.dataNascimento = builder.dataNascimento;
         this.peso = builder.peso;
@@ -30,6 +33,7 @@ public class Animal {
         this.raca = builder.raca;
         this.sexo = builder.sexo;
         this.cor = builder.cor;
+        this.ativo = builder.ativo;
     }
 
     public static AnimalBuilder builder() {
@@ -41,6 +45,22 @@ public class Animal {
             throw new IllegalArgumentException("Peso inválido");
         }
         this.peso = peso;
+    }
+
+    public void desativarAnimal() {
+        if (this.ativo.equals(Boolean.FALSE)) {
+            throw new AnimalJaDesativadoException("Animal já desativado com o ID: " + this.id.getValue());
+        } else {
+            this.ativo = Boolean.FALSE;
+        }
+    }
+
+    public void ativarAnimal() {
+        this.ativo = true;
+    }
+
+    public void vincularUsuario(Usuario usuario) {
+        this.usuarioId = usuario.getId();
     }
 
     public AnimalId getId() {
@@ -81,6 +101,10 @@ public class Animal {
 
     public String getCor() {
         return cor;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
     }
 
     @Override

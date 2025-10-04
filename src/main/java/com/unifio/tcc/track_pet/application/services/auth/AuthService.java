@@ -5,6 +5,8 @@ import com.unifio.tcc.track_pet.application.services.exceptions.EntidadeNaoEncon
 import com.unifio.tcc.track_pet.application.services.exceptions.UsuarioJaRegistratoException;
 import com.unifio.tcc.track_pet.domain.repositories.UsuarioDomainRepository;
 import com.unifio.tcc.track_pet.domain.sk.UsuarioId;
+import com.unifio.tcc.track_pet.domain.usecases.usuario.CriarUsuarioUseCase;
+import com.unifio.tcc.track_pet.domain.usecases.usuario.LoginUsuarioUseCase;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 import com.unifio.tcc.track_pet.infra.security.Token;
 import com.unifio.tcc.track_pet.infra.security.TokenService;
@@ -12,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthService {
+public class AuthService implements CriarUsuarioUseCase, LoginUsuarioUseCase {
     private final UsuarioDomainRepository usuarioRepository;
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
@@ -31,7 +33,14 @@ public class AuthService {
         return null;
     }
 
-    public Usuario registrarUsuario(Usuario usuario) {
+    @Override
+    public Boolean login(String email, String login) {
+        Usuario usuario = usuarioRepository.buscarUsuarioEmail(email).orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado com e-mail: " + email));
+        return passwordEncoder.matches(login, usuario.getSenha());
+    }
+
+    @Override
+    public void criar(Usuario usuario) {
         if (usuarioRepository.buscarUsuarioEmail(usuario.getEmail()).isPresent()) {
             throw new UsuarioJaRegistratoException(usuario.getEmail());
         }
@@ -46,6 +55,8 @@ public class AuthService {
                 .numero(usuario.getNumero())
                 .telefone(usuario.getTelefone())
                 .build();
-        return usuarioRepository.salvar(usuarioRegistrado);
+        usuarioRepository.salvar(usuarioRegistrado);
     }
+
+
 }
