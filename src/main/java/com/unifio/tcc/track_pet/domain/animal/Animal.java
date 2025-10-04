@@ -2,6 +2,7 @@ package com.unifio.tcc.track_pet.domain.animal;
 
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.sk.UsuarioId;
+import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -21,7 +22,7 @@ public class Animal {
 
     protected Animal(AnimalBuilder builder) {
         this.id = Objects.requireNonNull(builder.id, "Id de animal não pode ser nulo.");
-        this.usuarioId = Objects.requireNonNull(builder.usuarioId, "usuarioId não pode ser nulo.");
+        this.usuarioId = builder.usuarioId;
         this.nome = Objects.requireNonNull(builder.nome, "Nome não pode ser nulo.");
         this.dataNascimento = builder.dataNascimento;
         this.peso = builder.peso;
@@ -41,6 +42,10 @@ public class Animal {
             throw new IllegalArgumentException("Peso inválido");
         }
         this.peso = peso;
+    }
+
+    public void vincularUsuario(Usuario usuario) {
+        this.usuarioId = usuario.getId();
     }
 
     public AnimalId getId() {

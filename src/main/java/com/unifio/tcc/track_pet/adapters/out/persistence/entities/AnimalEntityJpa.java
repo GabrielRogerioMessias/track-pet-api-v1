@@ -1,7 +1,6 @@
 package com.unifio.tcc.track_pet.adapters.out.persistence.entities;
 
-import com.unifio.tcc.track_pet.domain.animal.Sexo;
-import com.unifio.tcc.track_pet.domain.animal.Situacao;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,9 +16,11 @@ public class AnimalEntityJpa {
     private String nome;
     private LocalDate dataNascimento;
     private Double peso;
+    @Enumerated(EnumType.STRING)
     private Situacao situacao;
     private String fotoUrl;
     private String raca;
+    @Enumerated(EnumType.STRING)
     private Sexo sexo;
     private String cor;
 

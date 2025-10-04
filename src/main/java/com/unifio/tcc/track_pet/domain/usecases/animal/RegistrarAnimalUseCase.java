@@ -4,6 +4,5 @@ import com.unifio.tcc.track_pet.domain.animal.Animal;
 
 
 public interface RegistrarAnimalUseCase {
-    Animal registrarAnimal();
-
+    Animal registrarAnimal(Animal animal);
 }
