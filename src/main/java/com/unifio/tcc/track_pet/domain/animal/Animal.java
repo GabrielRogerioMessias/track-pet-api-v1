@@ -1,5 +1,6 @@
 package com.unifio.tcc.track_pet.domain.animal;
 
+import com.unifio.tcc.track_pet.domain.exceptions.AnimalJaDesativadoException;
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.sk.UsuarioId;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
@@ -47,7 +48,11 @@ public class Animal {
     }
 
     public void desativarAnimal() {
-        this.ativo = false;
+        if (this.ativo.equals(Boolean.FALSE)) {
+            throw new AnimalJaDesativadoException("Animal já desativado com o ID: " + this.id.getValue());
+        } else {
+            this.ativo = Boolean.FALSE;
+        }
     }
 
     public void ativarAnimal() {

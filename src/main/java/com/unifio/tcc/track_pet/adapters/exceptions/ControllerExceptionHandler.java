@@ -2,6 +2,7 @@ package com.unifio.tcc.track_pet.adapters.exceptions;
 
 import com.unifio.tcc.track_pet.application.services.exceptions.EntidadeNaoEncontradaException;
 import com.unifio.tcc.track_pet.application.services.exceptions.UsuarioJaRegistratoException;
+import com.unifio.tcc.track_pet.domain.exceptions.AnimalJaDesativadoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +67,18 @@ public class ControllerExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+    }
+
+    @ExceptionHandler(AnimalJaDesativadoException.class)
+    public ResponseEntity<StandardError> animalJaDesativadoException(AnimalJaDesativadoException ex, HttpServletRequest request) {
+        String mensagemDeErro = "Erro na exclusão";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError standardError = new StandardError(Instant.now(),
+                status.value(),
+                mensagemDeErro,
+                ex.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
     }
 
 }
