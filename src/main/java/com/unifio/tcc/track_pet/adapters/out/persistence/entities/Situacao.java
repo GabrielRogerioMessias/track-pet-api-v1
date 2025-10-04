@@ -2,9 +2,11 @@ package com.unifio.tcc.track_pet.adapters.out.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(description = "Situação do Animal.")
 public enum Situacao {
     VIVO("V", "VIVO"),
     MORTO("M", "MORTO"),
