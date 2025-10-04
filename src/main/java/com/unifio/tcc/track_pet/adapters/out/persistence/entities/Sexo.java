@@ -2,10 +2,12 @@ package com.unifio.tcc.track_pet.adapters.out.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
 
+@Schema(description = "Sexo do animal.")
 public enum Sexo {
     MACHO("M", "MACHO"), FEMEA("F", "FEMEA");
     private final String code;
@@ -27,6 +29,6 @@ public enum Sexo {
 
     @JsonValue
     public String getCode() {
-        return code;
+        return descricao;
     }
 }
