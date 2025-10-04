@@ -23,6 +23,7 @@ public class AnimalEntityJpa {
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
     private String cor;
+    private Boolean ativo;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")

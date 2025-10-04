@@ -43,7 +43,9 @@ public class AnimalController {
     @GetMapping
     public ResponseEntity<List<AnimalRespostaDTO>> listarAnimal() {
         List<Animal> animais = listarAnimalUseCase.listarAnimal();
-        return ResponseEntity.ok().body(animais.stream()
+        return ResponseEntity.ok().body(animais
+                .stream()
+                .filter(a -> a.getAtivo().equals(Boolean.TRUE))
                 .map(animalDTOMapper::domainToDto)
                 .toList());
     }

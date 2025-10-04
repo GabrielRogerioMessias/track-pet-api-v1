@@ -18,6 +18,7 @@ public class Animal {
     private String raca;
     private Sexo sexo;
     private String cor;
+    private Boolean ativo;
 
 
     protected Animal(AnimalBuilder builder) {
@@ -31,6 +32,7 @@ public class Animal {
         this.raca = builder.raca;
         this.sexo = builder.sexo;
         this.cor = builder.cor;
+        this.ativo = builder.ativo;
     }
 
     public static AnimalBuilder builder() {
@@ -42,6 +44,14 @@ public class Animal {
             throw new IllegalArgumentException("Peso inválido");
         }
         this.peso = peso;
+    }
+
+    public void desativarAnimal() {
+        this.ativo = false;
+    }
+
+    public void ativarAnimal() {
+        this.ativo = true;
     }
 
     public void vincularUsuario(Usuario usuario) {
@@ -86,6 +96,10 @@ public class Animal {
 
     public String getCor() {
         return cor;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
     }
 
     @Override

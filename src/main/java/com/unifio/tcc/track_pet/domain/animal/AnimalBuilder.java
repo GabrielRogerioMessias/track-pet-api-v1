@@ -16,6 +16,7 @@ public class AnimalBuilder {
     String raca;
     Sexo sexo;
     String cor;
+    Boolean ativo;
 
     public AnimalBuilder id(AnimalId id) {
         this.id = id;
@@ -64,6 +65,11 @@ public class AnimalBuilder {
 
     public AnimalBuilder cor(String cor) {
         this.cor = cor;
+        return this;
+    }
+
+    public AnimalBuilder ativo(Boolean ativo) {
+        this.ativo = ativo;
         return this;
     }
 

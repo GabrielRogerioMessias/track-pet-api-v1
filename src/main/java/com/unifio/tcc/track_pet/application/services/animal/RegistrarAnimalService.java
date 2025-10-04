@@ -25,6 +25,7 @@ public class RegistrarAnimalService implements RegistrarAnimalUseCase {
     @Override
     public Animal registrarAnimal(Animal animal) {
         Usuario autenticado = securityUtils.usuarioAutenticado();
+        animal.ativarAnimal();
         animal.vincularUsuario(autenticado);
         return animalRepository.salvar(animal);
     }

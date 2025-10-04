@@ -22,4 +22,5 @@ public class AnimalRespostaDTO {
     private String raca;
     private Sexo sexo;
     private String cor;
+    private boolean ativo;
 }
