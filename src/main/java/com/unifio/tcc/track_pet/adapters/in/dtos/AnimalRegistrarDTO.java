@@ -26,7 +26,7 @@ public class AnimalRegistrarDTO {
     private LocalDate dataNascimento;
 
     @Schema(description = "Peso do animal em quilogramas. Deve ser um valor positivo.", example = "12.5", minimum = "0")
-    @Min(0)
+    @Min(value = 0, message = "O peso deve ser maior que 0")
     private Double peso;
 
     @Schema(description = "Situação atual do animal(V - VIVO | M - MORTO | P - PERDIDO).", example = "V")

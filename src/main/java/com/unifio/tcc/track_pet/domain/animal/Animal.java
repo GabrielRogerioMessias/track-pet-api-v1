@@ -1,6 +1,7 @@
 package com.unifio.tcc.track_pet.domain.animal;
 
 import com.unifio.tcc.track_pet.domain.exceptions.AnimalJaDesativadoException;
+import com.unifio.tcc.track_pet.domain.exceptions.RegraDeNegocioException;
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.sk.UsuarioId;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
@@ -40,11 +41,34 @@ public class Animal {
         return new AnimalBuilder();
     }
 
-    public void atualizarPeso(Double peso) {
-        if (this.peso <= 0) {
-            throw new IllegalArgumentException("Peso inválido");
+    public void atualizarAnimal(Animal novosDados) {
+        if (novosDados.getNome() != null && !novosDados.getNome().isBlank()) {
+            this.nome = novosDados.getNome();
         }
-        this.peso = peso;
+        if (novosDados.getDataNascimento() != null) {
+            this.dataNascimento = novosDados.dataNascimento;
+        }
+        if (novosDados.getPeso() != null) {
+            if (novosDados.getPeso() < 0) {
+                throw new RegraDeNegocioException("Peso do animal deve ser maior que zero");
+            }
+            this.peso = novosDados.peso;
+        }
+        if (novosDados.getSituacao() != null) {
+            this.situacao = novosDados.situacao;
+        }
+        if (novosDados.getFotoUrl() != null && !novosDados.getFotoUrl().isBlank()) {
+            this.fotoUrl = novosDados.getFotoUrl();
+        }
+        if (novosDados.getRaca() != null && !novosDados.getRaca().isBlank()) {
+            this.raca = novosDados.getRaca();
+        }
+        if (novosDados.getSexo() != null) {
+            this.sexo = novosDados.getSexo();
+        }
+        if (novosDados.getCor() != null && !novosDados.getCor().isBlank()) {
+            this.cor = novosDados.getCor();
+        }
     }
 
     public void desativarAnimal() {

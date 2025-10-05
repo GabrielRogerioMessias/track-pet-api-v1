@@ -3,6 +3,7 @@ package com.unifio.tcc.track_pet.adapters.exceptions;
 import com.unifio.tcc.track_pet.application.services.exceptions.EntidadeNaoEncontradaException;
 import com.unifio.tcc.track_pet.application.services.exceptions.UsuarioJaRegistratoException;
 import com.unifio.tcc.track_pet.domain.exceptions.AnimalJaDesativadoException;
+import com.unifio.tcc.track_pet.domain.exceptions.RegraDeNegocioException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,5 +81,18 @@ public class ControllerExceptionHandler {
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
     }
+
+    @ExceptionHandler(RegraDeNegocioException.class)
+    public ResponseEntity<StandardError> regraDeNegocioException(RegraDeNegocioException ex, HttpServletRequest request) {
+        String mensagemDeErro = "Quebra de regra de negócio";
+        HttpStatus status = HttpStatus.CONFLICT;
+        StandardError standardError = new StandardError(Instant.now(),
+                status.value(),
+                mensagemDeErro,
+                ex.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(standardError);
+    }
+
 
 }
