@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Schema(description =
+        "Objeto de transferência de dados utilizado para atualizar o registro de um animal existente no sistema."
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
