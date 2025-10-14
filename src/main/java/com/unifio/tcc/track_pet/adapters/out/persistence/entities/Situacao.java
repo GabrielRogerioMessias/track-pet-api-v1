@@ -9,7 +9,6 @@ import java.util.Arrays;
 @Schema(description = "Situação do Animal.")
 public enum Situacao {
     VIVO("V", "VIVO"),
-    MORTO("M", "MORTO"),
     PERDIDO("P", "PERDIDO");
 
     private String code;

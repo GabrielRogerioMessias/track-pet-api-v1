@@ -1,5 +1,6 @@
 package com.unifio.tcc.track_pet.adapters.in.mappers;
 
+import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalAtualizarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRegistrarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRespostaDTO;
 
@@ -15,6 +16,8 @@ public interface AnimalDTOMapper {
     Animal registrarDtoToEntity(AnimalRegistrarDTO animalRegistrarDto);
 
     AnimalRespostaDTO domainToDto(Animal animal);
+
+    Animal atualizarDtoToEntity(AnimalAtualizarDTO animalAtualizarDto);
 
     default AnimalId mapAnimalId(UUID id) {
         return id == null ? null : AnimalId.of(id);

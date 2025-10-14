@@ -24,6 +24,7 @@ public class BuscarAnimalPorIdService implements BuscarAnimalPorIdUseCase {
     @Override
     public Animal buscarAnimalPorId(UUID id) {
         Usuario autenticado = securityUtils.usuarioAutenticado();
-        return animalRepository.findById(AnimalId.of(id), autenticado).orElseThrow(() -> new EntidadeNaoEncontradaException("Animal não encontrado com o ID: " + id));
+        return animalRepository.findById(AnimalId.of(id), autenticado)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Animal não encontrado com o ID: " + id));
     }
 }
