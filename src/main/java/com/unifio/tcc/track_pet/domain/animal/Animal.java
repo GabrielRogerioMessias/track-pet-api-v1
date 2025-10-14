@@ -88,6 +88,10 @@ public class Animal {
         this.usuarioId = usuario.getId();
     }
 
+    public void marcarComoPerdido() {
+        this.situacao = Situacao.PERDIDO;
+    }
+
     public AnimalId getId() {
         return id;
     }

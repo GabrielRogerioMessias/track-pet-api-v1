@@ -35,6 +35,7 @@ public class AnimalController {
     private RegistrarAnimalUseCase registrarAnimalUseCase;
     private DesativarAnimalUseCase desativarAnimalUseCase;
     private AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase;
+    private MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase;
     private AnimalDTOMapper animalDTOMapper;
 
     public AnimalController(RegistrarAnimalService registrarAnimalUseCase,
@@ -42,13 +43,15 @@ public class AnimalController {
                             ListarAnimalUseCase listarAnimalUseCase,
                             BuscarAnimalPorIdService buscarAnimalPorIdUseCase,
                             DesativarAnimalUseCase desativarAnimalUseCase,
-                            AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase) {
+                            AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase,
+                            MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase) {
         this.registrarAnimalUseCase = registrarAnimalUseCase;
         this.animalDTOMapper = animalDTOMapper;
         this.listarAnimalUseCase = listarAnimalUseCase;
         this.buscarAnimalPorIdUseCase = buscarAnimalPorIdUseCase;
         this.desativarAnimalUseCase = desativarAnimalUseCase;
         this.atualizarDadosAnimalUseCase = atualizarDadosAnimalUseCase;
+        this.marcarAnimalComoPerdidoUseCase = marcarAnimalComoPerdidoUseCase;
 
     }
 
@@ -136,5 +139,22 @@ public class AnimalController {
             @PathVariable UUID idAnimal) {
         Animal novosDados = animalDTOMapper.atualizarDtoToEntity(novosDadosDTO);
         return ResponseEntity.ok().body(animalDTOMapper.domainToDto(atualizarDadosAnimalUseCase.atualizarDadosAnimal(novosDados, idAnimal)));
+    }
+
+    @Operation(
+            summary = "Marcar um animal como perdido, através do ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Animal marcado como perdido com sucesso.",
+                            content = @Content(schema = @Schema(implementation = AnimalRespostaDTO.class))),
+                    @ApiResponse(responseCode = "404", description = "Animal não encontrado",
+                            content = @Content(schema = @Schema(implementation = StandardError.class)))
+            }
+    )
+    @PatchMapping(value = "/perdido/{idAnimal}")
+    public ResponseEntity<AnimalRespostaDTO> marcarComoPerdido(
+            @Parameter(description = "ID do animal a ser marcado como perdido.")
+            @PathVariable UUID idAnimal) {
+        Animal animalPerdido = marcarAnimalComoPerdidoUseCase.marcarComoPerdido(idAnimal);
+        return ResponseEntity.ok().body(animalDTOMapper.domainToDto(animalPerdido));
     }
 }
