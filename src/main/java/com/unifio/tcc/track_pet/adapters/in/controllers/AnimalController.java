@@ -1,6 +1,7 @@
 package com.unifio.tcc.track_pet.adapters.in.controllers;
 
 import com.unifio.tcc.track_pet.adapters.exceptions.StandardError;
+import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalAtualizarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRegistrarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRespostaDTO;
 import com.unifio.tcc.track_pet.adapters.in.mappers.AnimalDTOMapper;
@@ -130,10 +131,10 @@ public class AnimalController {
     @PutMapping(value = "/{idAnimal}")
     public ResponseEntity<AnimalRespostaDTO> atualizarAnimal(
             @Parameter(description = "Objeto de transferencia com os dados atualizados do animal.")
-            @Valid @RequestBody AnimalRegistrarDTO novosDadosDTO,
+            @Valid @RequestBody AnimalAtualizarDTO novosDadosDTO,
             @Parameter(description = "Id do animal a ser atualizado.", example = "468ffe98-eff4-4947-b078-fbd3beb713a5")
             @PathVariable UUID idAnimal) {
-        Animal novosDados = animalDTOMapper.registrarDtoToEntity(novosDadosDTO);
+        Animal novosDados = animalDTOMapper.atualizarDtoToEntity(novosDadosDTO);
         return ResponseEntity.ok().body(animalDTOMapper.domainToDto(atualizarDadosAnimalUseCase.atualizarDadosAnimal(novosDados, idAnimal)));
     }
 }

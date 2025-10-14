@@ -1,0 +1,2 @@
+ALTER TABLE animal
+    MODIFY COLUMN situacao ENUM('VIVO', 'PERDIDO');

@@ -29,7 +29,7 @@ public class Animal {
         this.nome = Objects.requireNonNull(builder.nome, "Nome não pode ser nulo.");
         this.dataNascimento = builder.dataNascimento;
         this.peso = builder.peso;
-        this.situacao = builder.situacao == null ? Situacao.MORTO : builder.situacao;
+        this.situacao = builder.situacao;
         this.fotoUrl = builder.fotoUrl;
         this.raca = builder.raca;
         this.sexo = builder.sexo;
@@ -81,6 +81,7 @@ public class Animal {
 
     public void ativarAnimal() {
         this.ativo = true;
+        this.situacao = Situacao.VIVO;
     }
 
     public void vincularUsuario(Usuario usuario) {

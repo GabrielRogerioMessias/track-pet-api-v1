@@ -13,11 +13,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Schema(description = "Objeto de transferência de dados utilizado para o registro de um novo animal no sistema.")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnimalRegistrarDTO {
+public class AnimalAtualizarDTO {
     @Schema(description = "Nome do animal.", example = "Rex")
     @NotBlank(message = "Nome é obrigatório")
     private String nome;
@@ -28,6 +27,10 @@ public class AnimalRegistrarDTO {
     @Schema(description = "Peso do animal em quilogramas. Deve ser um valor positivo.", example = "12.5", minimum = "0")
     @Min(value = 0, message = "O peso deve ser maior que 0")
     private Double peso;
+
+    @Schema(description = "Situação atual do animal(V - VIVO | P - PERDIDO).", example = "V")
+    @Enumerated(EnumType.STRING)
+    private Situacao situacao;
 
     @Schema(description = "Raça do animal.", example = "Labrador Retriever")
     private String raca;
@@ -41,4 +44,3 @@ public class AnimalRegistrarDTO {
     private String cor;
 
 }
-
