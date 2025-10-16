@@ -6,7 +6,7 @@ import com.unifio.tcc.track_pet.domain.sk.LeituraId;
 import java.time.LocalDateTime;
 
 public class LeituraBuilder {
-    LeituraId id;
+    LeituraId id = LeituraId.genereId();
     AnimalId animalId;
     LocalDateTime dataHora;
     String latitude;
@@ -38,8 +38,8 @@ public class LeituraBuilder {
         return this;
     }
 
-    public LeituraBuilder message(String message) {
-        this.mensagem = message;
+    public LeituraBuilder mensagem(String mensagem) {
+        this.mensagem = mensagem;
         return this;
     }
 
