@@ -6,6 +6,9 @@ import com.unifio.tcc.track_pet.adapters.in.dtos.LeituraQrRespostaDTO;
 import com.unifio.tcc.track_pet.adapters.in.mappers.LeituraDTOMapper;
 import com.unifio.tcc.track_pet.domain.qr.LeituraQr;
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
+import com.unifio.tcc.track_pet.domain.sk.LeituraId;
+import com.unifio.tcc.track_pet.domain.usecases.leituraqr.BuscarLeituraQrPorIdUseCase;
+import com.unifio.tcc.track_pet.domain.usecases.leituraqr.ExcluirLeituraQrUseCase;
 import com.unifio.tcc.track_pet.domain.usecases.leituraqr.ListarLeiturasQrUseCase;
 import com.unifio.tcc.track_pet.domain.usecases.leituraqr.RegistrarLeituraQrUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,14 +32,19 @@ public class LeituraQrController {
     private final LeituraDTOMapper leituraDTOMapper;
     private final RegistrarLeituraQrUseCase registrarLeituraQrUseCase;
     private final ListarLeiturasQrUseCase listarLeiturasQrUseCase;
+    private final BuscarLeituraQrPorIdUseCase buscarLeituraQrPorIdUseCase;
+    private final ExcluirLeituraQrUseCase excluirLeituraQrUseCase;
 
     public LeituraQrController(RegistrarLeituraQrUseCase registrarLeituraQrUseCase,
                                LeituraDTOMapper leituraDTOMapper,
-                               ListarLeiturasQrUseCase listarLeiturasQrUseCase) {
+                               ListarLeiturasQrUseCase listarLeiturasQrUseCase,
+                               BuscarLeituraQrPorIdUseCase buscarLeituraQrPorIdUseCase,
+                               ExcluirLeituraQrUseCase excluirLeituraQrUseCase) {
         this.leituraDTOMapper = leituraDTOMapper;
         this.registrarLeituraQrUseCase = registrarLeituraQrUseCase;
         this.listarLeiturasQrUseCase = listarLeiturasQrUseCase;
-
+        this.buscarLeituraQrPorIdUseCase = buscarLeituraQrPorIdUseCase;
+        this.excluirLeituraQrUseCase = excluirLeituraQrUseCase;
     }
 
     @Operation(
@@ -66,7 +74,7 @@ public class LeituraQrController {
                             content = @Content(schema = @Schema(implementation = StandardError.class))),
             }
     )
-    @GetMapping(value = "/{idAnimal}")
+    @GetMapping(value = "animal/{idAnimal}")
     public ResponseEntity<List<LeituraQrRespostaDTO>> listarLeiturasAnimal(
             @Parameter(description = "ID do animal para ver a lista de leituras efetuadas para ele.")
             @PathVariable UUID idAnimal) {
@@ -75,5 +83,38 @@ public class LeituraQrController {
                 .stream()
                 .map(leituraDTOMapper::entityToDtoResposta)
                 .toList());
+    }
+
+    @Operation(
+            summary = "Busca uma leitura pelo ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Leitura com o ID passado é encontrada e retornada com sucesso.",
+                            content = @Content(schema = @Schema(implementation = LeituraQrRespostaDTO.class))),
+                    @ApiResponse(responseCode = "404", description = "Leitura com o ID passado não existe, ou não pertence ao usuário autenticado.",
+                            content = @Content(schema = @Schema(implementation = StandardError.class))),
+            }
+    )
+    @GetMapping(value = "/{idLeitura}")
+    public ResponseEntity<LeituraQrRespostaDTO> buscarLeituraQrPorId(
+            @Parameter(description = "ID da leitura a ser buscada", example = "82cc8a63-ff18-4fb0-ac87-7018ba1b7221")
+            @PathVariable UUID idLeitura) {
+        return ResponseEntity.ok().body(leituraDTOMapper.
+                entityToDtoResposta(buscarLeituraQrPorIdUseCase.buscarLeituraQrPorId(LeituraId.of(idLeitura))));
+    }
+
+    @Operation(
+            summary = "Excluir uma leitura pelo ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Leitura com o ID passado é excluída com sucesso."),
+                    @ApiResponse(responseCode = "404", description = "Leitura com o ID passado não existe, ou não pertence ao usuário autenticado.",
+                            content = @Content(schema = @Schema(implementation = StandardError.class))),
+            }
+    )
+    @DeleteMapping(value = "/{idLeitura}")
+    public ResponseEntity<Void> excluirLeitura(
+            @Parameter(description = "ID da leitura a ser excluída", example = "82cc8a63-ff18-4fb0-ac87-7018ba1b7221")
+            @PathVariable UUID idLeitura) {
+        excluirLeituraQrUseCase.excluirLeitura(LeituraId.of(idLeitura));
+        return ResponseEntity.noContent().build();
     }
 }

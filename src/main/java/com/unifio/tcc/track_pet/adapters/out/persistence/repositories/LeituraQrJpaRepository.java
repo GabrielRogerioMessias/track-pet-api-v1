@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -19,4 +20,12 @@ public interface LeituraQrJpaRepository extends JpaRepository<LeituraEntityJpa, 
     List<LeituraEntityJpa> findByAnimalIdAndUser(@Param(value = "animalId") UUID animalId,
                                                  @Param(value = "usuarioAutenticado")
                                                  UsuarioEntityJpa usuarioAutenticado);
+
+    @Query(value = "SELECT l FROM LeituraEntityJpa AS l " +
+            "WHERE l.id = :leituraId " +
+            "AND l.animal.usuario= :usuarioAutenticado")
+    Optional<LeituraEntityJpa> findByIdAndAutenticatedUser(@Param(value = "leituraId")
+                                                           UUID leituraId,
+                                                           @Param(value = "usuarioAutenticado")
+                                                           UsuarioEntityJpa usuarioAutenticado);
 }

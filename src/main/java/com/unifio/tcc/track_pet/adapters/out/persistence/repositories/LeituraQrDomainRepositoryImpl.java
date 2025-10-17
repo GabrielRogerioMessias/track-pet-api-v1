@@ -7,11 +7,13 @@ import com.unifio.tcc.track_pet.domain.qr.LeituraQr;
 import com.unifio.tcc.track_pet.domain.repositories.AnimalDomainRepository;
 import com.unifio.tcc.track_pet.domain.repositories.LeituraDomainRepository;
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
+import com.unifio.tcc.track_pet.domain.sk.LeituraId;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class LeituraQrDomainRepositoryImpl implements LeituraDomainRepository {
@@ -36,8 +38,8 @@ public class LeituraQrDomainRepositoryImpl implements LeituraDomainRepository {
     }
 
     @Override
-    public Optional<LeituraQr> findById(Long id) {
-        Optional<LeituraEntityJpa> leituraQr = leituraQrJpaRepository.findById(id);
+    public Optional<LeituraQr> findById(UUID idLeituraQr, Usuario usuario) {
+        Optional<LeituraEntityJpa> leituraQr = leituraQrJpaRepository.findByIdAndAutenticatedUser(idLeituraQr, usuarioMapper.toJpa(usuario));
         return leituraQr.map(leituraQrMapper::toDomain);
     }
 
@@ -51,6 +53,6 @@ public class LeituraQrDomainRepositoryImpl implements LeituraDomainRepository {
 
     @Override
     public void delete(LeituraQr leituraQr) {
-
+        leituraQrJpaRepository.delete(leituraQrMapper.toJpa(leituraQr));
     }
 }
