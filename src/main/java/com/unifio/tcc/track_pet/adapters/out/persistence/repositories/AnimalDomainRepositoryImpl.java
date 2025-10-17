@@ -41,16 +41,17 @@ public class AnimalDomainRepositoryImpl implements AnimalDomainRepository {
     }
 
     @Override
+    public Optional<Animal> findByIdNaoEntenticado(AnimalId id) {
+        Optional<AnimalEntityJpa> result = animalJpaRepository.findById(id.getValue());
+        return result.map(animalMapper::toDomain);
+    }
+
+    @Override
     public List<Animal> findAll(Usuario usuarioAutenticado) {
         UsuarioEntityJpa usuarioEntityJpa = usuarioMapper.toJpa(usuarioAutenticado);
         return animalJpaRepository.findAllByUsuario(usuarioEntityJpa)
                 .stream()
                 .map(animalMapper::toDomain)
                 .toList();
-    }
-
-    @Override
-    public void delete(Animal animal) {
-        animalJpaRepository.delete(animalMapper.toJpa(animal));
     }
 }

@@ -13,32 +13,32 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface LeituraQrMapper {
 
-    @Mapping(source = "animal.id", target = "animalId") // pega UUID do animal e converte para AnimalId
+    @Mapping(source = "animal.id", target = "animalId") // UUID → AnimalId
     @Mapping(source = "id", target = "id")
-        // converte Long para LeituraId
+        // UUID → LeituraId
     LeituraQr toDomain(LeituraEntityJpa entity);
 
-    @Mapping(source = "animalId", target = "animal")   // AnimalId -> stub AnimalEntityJpa
+    @Mapping(source = "animalId", target = "animal")    // AnimalId → AnimalEntityJpa
     @Mapping(source = "id", target = "id")
-        // LeituraId -> Long
+        // LeituraId → UUID
     LeituraEntityJpa toJpa(LeituraQr domain);
 
-    // Conversão Long -> LeituraId
-    default LeituraId map(Long id) {
+    // Conversão UUID -> LeituraId
+    default LeituraId map(UUID id) {
         return id == null ? null : LeituraId.of(id);
     }
 
-    // Conversão LeituraId -> Long
-    default Long map(LeituraId leituraId) {
+    // Conversão LeituraId -> UUID
+    default UUID map(LeituraId leituraId) {
         return leituraId == null ? null : leituraId.getValue();
     }
 
     // Conversão UUID -> AnimalId
-    default AnimalId map(UUID id) {
+    default AnimalId mapAnimal(UUID id) {
         return id == null ? null : AnimalId.of(id);
     }
 
-    // Conversão AnimalId -> AnimalEntityJpa
+    // Conversão AnimalId -> AnimalEntityJpa (stub)
     default AnimalEntityJpa map(AnimalId animalId) {
         if (animalId == null) return null;
         AnimalEntityJpa animal = new AnimalEntityJpa();
