@@ -2,10 +2,8 @@ package com.unifio.tcc.track_pet.domain.qr;
 
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.sk.LeituraId;
-import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 public class LeituraQr {

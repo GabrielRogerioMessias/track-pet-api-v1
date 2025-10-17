@@ -8,7 +8,6 @@ import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.usecases.leituraqr.ListarLeiturasQrUseCase;
 import com.unifio.tcc.track_pet.domain.usuario.Usuario;
 import com.unifio.tcc.track_pet.infra.security.SecurityUtils;
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

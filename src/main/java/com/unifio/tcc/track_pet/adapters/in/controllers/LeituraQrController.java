@@ -1,5 +1,6 @@
 package com.unifio.tcc.track_pet.adapters.in.controllers;
 
+import com.unifio.tcc.track_pet.adapters.exceptions.StandardError;
 import com.unifio.tcc.track_pet.adapters.in.dtos.LeituraQrRegistrarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.LeituraQrRespostaDTO;
 import com.unifio.tcc.track_pet.adapters.in.mappers.LeituraDTOMapper;
@@ -7,6 +8,13 @@ import com.unifio.tcc.track_pet.domain.qr.LeituraQr;
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.usecases.leituraqr.ListarLeiturasQrUseCase;
 import com.unifio.tcc.track_pet.domain.usecases.leituraqr.RegistrarLeituraQrUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name = "LeiturasQr", description = "Controlador para operações relacionadas a leituras de QR codes.")
 @RestController
 @RequestMapping(value = "leitura")
 public class LeituraQrController {
@@ -30,16 +39,37 @@ public class LeituraQrController {
 
     }
 
+    @Operation(
+            summary = "Registrar leitura de QR code e salvar dados de localização e mensagem personalizada.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Os dados da leitura são registrados com sucesso.",
+                            content = @Content(schema = @Schema(implementation = LeituraQrRespostaDTO.class))),
+            }
+    )
     @PostMapping(value = "/{idAnimal}")
-    public ResponseEntity<LeituraQrRespostaDTO> registrarLeituraQr(@PathVariable UUID idAnimal,
-                                                                   @RequestBody LeituraQrRegistrarDTO entity) {
+    public ResponseEntity<LeituraQrRespostaDTO> registrarLeituraQr(
+            @Parameter(description = "ID do animal perdido - contido no QR da coleira")
+            @PathVariable UUID idAnimal,
+            @Parameter(description = "Dados da leitura, que possibilitam o rastreamento do animal.")
+            @RequestBody LeituraQrRegistrarDTO entity) {
         LeituraQr leituraQr = registrarLeituraQrUseCase.registarLeituraQr(leituraDTOMapper.registrarDtoToEntity(entity), idAnimal);
         System.out.println();
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).body(leituraDTOMapper.entityToDtoResposta(leituraQr));
     }
 
+    @Operation(
+            summary = "Retorna todas as leituras contendo a localização e mensagens personalizadas através do ID do animal.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Uma lista com as leituras realizadas para determinado animal é retornada.",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = LeituraQrRespostaDTO.class)))),
+                    @ApiResponse(responseCode = "404", description = "Animal não encontrado com o ID passado, ou não pertence ao usuário autenticado.",
+                            content = @Content(schema = @Schema(implementation = StandardError.class))),
+            }
+    )
     @GetMapping(value = "/{idAnimal}")
-    public ResponseEntity<List<LeituraQrRespostaDTO>> listarLeiturasAnimal(@PathVariable UUID idAnimal) {
+    public ResponseEntity<List<LeituraQrRespostaDTO>> listarLeiturasAnimal(
+            @Parameter(description = "ID do animal para ver a lista de leituras efetuadas para ele.")
+            @PathVariable UUID idAnimal) {
         List<LeituraQr> leituraQrs = listarLeiturasQrUseCase.listar(AnimalId.of(idAnimal));
         return ResponseEntity.ok().body(leituraQrs
                 .stream()
