@@ -4,14 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
 @Table(name = "leitura_qr")
 public class LeituraEntityJpa {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
+    @Column(name = "data_hora")
     private LocalDateTime dataHora;
     private String latitude;
     private String longitude;

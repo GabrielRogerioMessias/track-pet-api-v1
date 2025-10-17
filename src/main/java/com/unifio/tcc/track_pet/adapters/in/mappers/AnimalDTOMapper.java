@@ -3,7 +3,6 @@ package com.unifio.tcc.track_pet.adapters.in.mappers;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalAtualizarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRegistrarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRespostaDTO;
-
 import com.unifio.tcc.track_pet.domain.animal.Animal;
 import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import org.mapstruct.Mapper;

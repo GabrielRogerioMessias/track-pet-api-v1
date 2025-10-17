@@ -14,13 +14,21 @@ public class LeituraQr {
     private String longitude;
     private String mensagem;
 
-    protected LeituraQr(LeituraBuilder b) {
-        this.id = Objects.requireNonNull(b.id, "id não pode ser nulo.");
-        this.animalId = Objects.requireNonNull(b.animalId, "Id do animal não pode ser nulo.");
-        this.dataHora = b.dataHora;
-        this.latitude = b.latitude;
-        this.longitude = b.longitude;
-        this.mensagem = b.mensagem;
+    protected LeituraQr(LeituraBuilder builder) {
+        this.id = Objects.requireNonNull(builder.id, "id não pode ser nulo.");
+        this.animalId = builder.animalId;
+        this.dataHora = builder.dataHora;
+        this.latitude = builder.latitude;
+        this.longitude = builder.longitude;
+        this.mensagem = builder.mensagem;
+    }
+
+    public void vincularAnimal(AnimalId animalId) {
+        this.animalId = animalId;
+    }
+
+    public void dataLeitura() {
+        this.dataHora = LocalDateTime.now();
     }
 
     public static LeituraBuilder builder() {

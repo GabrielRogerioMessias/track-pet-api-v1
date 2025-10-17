@@ -1,22 +1,27 @@
 package com.unifio.tcc.track_pet.domain.sk;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public final class LeituraId {
-    private final Long value;
+    private final UUID value;
 
-    private LeituraId(Long id) {
-        this.value = id;
+    private LeituraId(UUID value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Id da leitura não pode ser nulo.");
+        }
+        this.value = value;
     }
 
-    public static LeituraId of(Long value) {
-        if (value == null || value <= 0) {
-            throw new IllegalArgumentException("ID da Leitura deve ser um número positivo");
-        }
+    public static LeituraId genereId() {
+        return new LeituraId(UUID.randomUUID());
+    }
+
+    public static LeituraId of(UUID value) {
         return new LeituraId(value);
     }
 
-    public Long getValue() {
+    public UUID getValue() {
         return value;
     }
 

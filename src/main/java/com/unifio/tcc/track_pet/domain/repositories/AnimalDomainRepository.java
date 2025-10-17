@@ -12,7 +12,8 @@ public interface AnimalDomainRepository {
 
     Optional<Animal> findById(AnimalId id, Usuario usuarioAutenticado);
 
+    Optional<Animal> findByIdNaoEntenticado(AnimalId id);
+
     List<Animal> findAll(Usuario usuarioAutenticado);
 
-    void delete(Animal animal);
 }

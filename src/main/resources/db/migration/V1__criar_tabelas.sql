@@ -25,7 +25,7 @@ CREATE TABLE animal(
 );
 
 CREATE TABLE leitura_qr(
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BINARY(16) PRIMARY KEY,
     animal_id BINARY(16) NOT NULL,
     dataHora DATETIME,
     latitude VARCHAR(45),
