@@ -5,15 +5,15 @@ import com.unifio.tcc.track_pet.domain.sk.UsuarioId;
 import java.util.Objects;
 
 public class Usuario {
-    private final UsuarioId id;
-    private final String nome;
-    private final String sobrenome;
-    private final String email;
-    private final String senha;
-    private final String cidade;
-    private final String bairro;
-    private final String numero;
-    private final String telefone;
+    private UsuarioId id;
+    private String nome;
+    private String sobrenome;
+    private String email;
+    private String senha;
+    private String cidade;
+    private String bairro;
+    private String numero;
+    private String telefone;
 
     protected Usuario(UsuarioBuilder b) {
         this.id = Objects.requireNonNull(b.id, "id não pode ser nulo");
@@ -29,6 +29,28 @@ public class Usuario {
 
     public static UsuarioBuilder builder() {
         return new UsuarioBuilder();
+    }
+
+    public void atualizarUsuario(Usuario novosDados) {
+        if (novosDados.getNome() != null && !novosDados.getNome().isEmpty()) {
+            this.nome = novosDados.nome;
+        }
+        if (novosDados.getSobrenome() != null && !novosDados.getSobrenome().isEmpty()) {
+            this.sobrenome = novosDados.sobrenome;
+        }
+        if (novosDados.getCidade() != null && !novosDados.getCidade().isEmpty()) {
+            this.cidade = novosDados.cidade;
+        }
+        if (novosDados.getBairro() != null && !novosDados.getBairro().isEmpty()) {
+            this.bairro = novosDados.bairro;
+        }
+        if (novosDados.getNumero() != null && !novosDados.getNumero().isEmpty()) {
+            this.numero = novosDados.numero;
+        }
+        if (novosDados.getTelefone() != null && !novosDados.getTelefone().isEmpty()) {
+            this.telefone = novosDados.getTelefone();
+        }
+
     }
 
     public UsuarioId getId() {
