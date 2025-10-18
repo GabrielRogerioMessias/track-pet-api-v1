@@ -1,7 +1,7 @@
 # 🐾 Track API - v0.1
 
 API para cadastro e rastreamento de pets através do QR Code da coleira.  
-Esta é a **versão 0.1**, contendo funcionalidades iniciais de autenticação e gerenciamento de animais.
+Esta é a **versão 0.2**, contendo funcionalidades iniciais de autenticação e gerenciamento de animais.
 
 ---
 
@@ -10,13 +10,16 @@ Esta é a **versão 0.1**, contendo funcionalidades iniciais de autenticação e
 ### 👤 Usuários
 - Registrar novo usuário  
 - Fazer login e receber **token JWT**
+- Atualizar dados de cadastro
+- Buscar informações do perfil autenticado através de um end-point
 
 ### 🐶 Pets
 - Cadastrar pet  
 - Listar pets cadastrados  
 - Buscar pet por ID  
-- Excluir/Desativar pet por ID  
-- *(Em desenvolvimento)*: rastreamento via scanner da coleira (**QR Code**)
+- Excluir/Desativar pet por ID
+- Atualizar dados do pet por ID
+- End-point responsável por receber dados de um possível encontro (longitude, latitude, mensagem personalizada)
 
 ---
 
@@ -89,7 +92,7 @@ A API conta com uma interface Swagger para explorar e testar os endpoints dispon
 ---
 
 📌 Status do Projeto
-🚧 Versão 0.1 - Em desenvolvimento
+🚧 Versão 0.2 - Em desenvolvimento
 
 
 
