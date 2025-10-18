@@ -4,10 +4,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Schema(description = "DTO para registro de um novo usuário")
+@Schema(description = "Objeto de transferencia para registro de novos usuários.")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioRegistrarDTO {
     @Schema(description = "Nome do usuário", example = "Exemplo")
     @NotBlank(message = "Nome é obrigatório")
