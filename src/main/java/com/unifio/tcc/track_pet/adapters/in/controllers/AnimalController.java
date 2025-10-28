@@ -1,11 +1,14 @@
 package com.unifio.tcc.track_pet.adapters.in.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unifio.tcc.track_pet.adapters.exceptions.StandardError;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalAtualizarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRegistrarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRespostaDTO;
 import com.unifio.tcc.track_pet.adapters.in.mappers.AnimalDTOMapper;
 import com.unifio.tcc.track_pet.application.services.animal.BuscarAnimalPorIdService;
+import com.unifio.tcc.track_pet.application.services.animal.RegistrarAnimalComFotoService;
 import com.unifio.tcc.track_pet.application.services.animal.RegistrarAnimalService;
 import com.unifio.tcc.track_pet.domain.animal.Animal;
 import com.unifio.tcc.track_pet.domain.usecases.animal.*;
@@ -18,8 +21,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +42,7 @@ public class AnimalController {
     private AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase;
     private MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase;
     private AnimalDTOMapper animalDTOMapper;
+    private RegistrarAnimalComFotoUseCase registrarAnimalComFotoUseCase;
 
     public AnimalController(RegistrarAnimalService registrarAnimalUseCase,
                             AnimalDTOMapper animalDTOMapper,
@@ -44,7 +50,8 @@ public class AnimalController {
                             BuscarAnimalPorIdService buscarAnimalPorIdUseCase,
                             DesativarAnimalUseCase desativarAnimalUseCase,
                             AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase,
-                            MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase) {
+                            MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase,
+                            RegistrarAnimalComFotoUseCase registrarAnimalComFotoUseCase) {
         this.registrarAnimalUseCase = registrarAnimalUseCase;
         this.animalDTOMapper = animalDTOMapper;
         this.listarAnimalUseCase = listarAnimalUseCase;
@@ -52,24 +59,38 @@ public class AnimalController {
         this.desativarAnimalUseCase = desativarAnimalUseCase;
         this.atualizarDadosAnimalUseCase = atualizarDadosAnimalUseCase;
         this.marcarAnimalComoPerdidoUseCase = marcarAnimalComoPerdidoUseCase;
-
+        this.registrarAnimalComFotoUseCase = registrarAnimalComFotoUseCase;
     }
 
-    @Operation(
-            summary = "Registrar um novo animal/pet.",
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "Animal registrado com sucesso.",
-                            content = @Content(schema = @Schema(implementation = AnimalRespostaDTO.class))),
-                    @ApiResponse(responseCode = "400", description = "Dados de registro inválidos.",
-                            content = @Content(schema = @Schema(implementation = StandardError.class)))
-            }
-    )
-    @PostMapping
-    public ResponseEntity<AnimalRespostaDTO> registrarAnimal(
-            @Parameter(description = "Objeto de transferencia com os dados atualizados do animal.")
-            @Valid @RequestBody AnimalRegistrarDTO dto) {
-        Animal animal = registrarAnimalUseCase.registrarAnimal(animalDTOMapper.registrarDtoToEntity(dto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(animalDTOMapper.domainToDto(animal));
+    //    @Operation(
+//            summary = "Registrar um novo animal/pet.",
+//            responses = {
+//                    @ApiResponse(responseCode = "201", description = "Animal registrado com sucesso.",
+//                            content = @Content(schema = @Schema(implementation = AnimalRespostaDTO.class))),
+//                    @ApiResponse(responseCode = "400", description = "Dados de registro inválidos.",
+//                            content = @Content(schema = @Schema(implementation = StandardError.class)))
+//            }
+//    )
+//    @PostMapping
+//    public ResponseEntity<AnimalRespostaDTO> registrarAnimal(
+//            @Parameter(description = "Objeto de transferencia com os dados atualizados do animal.")
+//            @Valid @RequestBody AnimalRegistrarDTO dto) {
+//        Animal animal = registrarAnimalUseCase.registrarAnimal(animalDTOMapper.registrarDtoToEntity(dto));
+//        return ResponseEntity.status(HttpStatus.CREATED).body(animalDTOMapper.domainToDto(animal));
+//    }
+    @PostMapping(value = "/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AnimalRespostaDTO> registrarAnimalComFoto(
+            @RequestPart("dados") String dadosJson,
+            @RequestPart(value = "foto", required = false) MultipartFile foto)
+            throws JsonProcessingException {
+
+        // Converta o JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        AnimalRegistrarDTO dto = objectMapper.readValue(dadosJson, AnimalRegistrarDTO.class);
+
+        Animal animal = animalDTOMapper.registrarDtoToEntity(dto);
+        Animal salvo = registrarAnimalComFotoUseCase.registrarAnimalComFoto(animal, foto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(animalDTOMapper.domainToDto(salvo));
     }
 
     @Operation(

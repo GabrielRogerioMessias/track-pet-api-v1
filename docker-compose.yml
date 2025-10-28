@@ -37,6 +37,8 @@ services:
       api.security.token.security: ${API_SECRET}
     networks:
       - app-network
+    volumes:
+      - ./uploads:/app/uploads
 
 volumes:
   mysql_data:

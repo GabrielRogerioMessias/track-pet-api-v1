@@ -33,7 +33,7 @@ public class AnimalBuilder {
         return this;
     }
 
-    public AnimalBuilder nascimento(LocalDate nascimento) {
+    public AnimalBuilder dataNascimento(LocalDate nascimento) {
         this.dataNascimento = nascimento;
         return this;
     }
