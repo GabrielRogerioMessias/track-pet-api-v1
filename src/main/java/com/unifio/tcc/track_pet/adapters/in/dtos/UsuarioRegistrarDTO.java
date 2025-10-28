@@ -18,7 +18,6 @@ public class UsuarioRegistrarDTO {
     private String nome;
 
     @Schema(description = "Sobrenome do usuário", example = "Exemplo Exemplo")
-    @NotBlank(message = "Sobrenome é obrigatório")
     private String sobrenome;
 
     @Schema(description = "Endereço de e-mail válido e único", example = "exemplo.unico@email.com")
@@ -32,19 +31,15 @@ public class UsuarioRegistrarDTO {
     private String senha;
 
     @Schema(description = "Cidade do usuário", example = "New York")
-    @NotBlank(message = "Cidade é obrigatória")
     private String cidade;
 
     @Schema(description = "Bairro do usuário", example = "Queens")
-    @NotBlank(message = "Bairro é obrigatório")
     private String bairro;
 
     @Schema(description = "Número da casa do usuário", example = "177")
-    @NotBlank(message = "Número é obrigatório")
     private String numero;
 
     @Schema(description = "Telefone do usuário", example = "5543999999999")
-    @NotBlank(message = "Telefone é obrigatório")
     private String telefone;
 
 }

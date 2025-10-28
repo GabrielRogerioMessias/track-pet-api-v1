@@ -27,7 +27,7 @@ CREATE TABLE animal(
 CREATE TABLE leitura_qr(
     id BINARY(16) PRIMARY KEY,
     animal_id BINARY(16) NOT NULL,
-    dataHora DATETIME,
+    data_hora DATETIME,
     latitude VARCHAR(45),
     longitude VARCHAR(45),
     mensagem VARCHAR(1000),
