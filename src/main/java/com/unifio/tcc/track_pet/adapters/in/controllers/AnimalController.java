@@ -4,13 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unifio.tcc.track_pet.adapters.exceptions.StandardError;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalAtualizarDTO;
+import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalEncontroDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRegistrarDTO;
 import com.unifio.tcc.track_pet.adapters.in.dtos.AnimalRespostaDTO;
 import com.unifio.tcc.track_pet.adapters.in.mappers.AnimalDTOMapper;
 import com.unifio.tcc.track_pet.application.services.animal.BuscarAnimalPorIdService;
-import com.unifio.tcc.track_pet.application.services.animal.RegistrarAnimalComFotoService;
-import com.unifio.tcc.track_pet.application.services.animal.RegistrarAnimalService;
 import com.unifio.tcc.track_pet.domain.animal.Animal;
+import com.unifio.tcc.track_pet.domain.sk.AnimalId;
 import com.unifio.tcc.track_pet.domain.usecases.animal.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,22 +37,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AnimalController {
     private BuscarAnimalPorIdUseCase buscarAnimalPorIdUseCase;
     private ListarAnimalUseCase listarAnimalUseCase;
-    private RegistrarAnimalUseCase registrarAnimalUseCase;
     private DesativarAnimalUseCase desativarAnimalUseCase;
     private AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase;
     private MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase;
     private AnimalDTOMapper animalDTOMapper;
     private RegistrarAnimalComFotoUseCase registrarAnimalComFotoUseCase;
+    private BuscarAnimalPorIDNaoAutenticadoUseCase buscarAnimalPorIDNaoAutenticadoUseCase;
 
-    public AnimalController(RegistrarAnimalService registrarAnimalUseCase,
-                            AnimalDTOMapper animalDTOMapper,
-                            ListarAnimalUseCase listarAnimalUseCase,
-                            BuscarAnimalPorIdService buscarAnimalPorIdUseCase,
-                            DesativarAnimalUseCase desativarAnimalUseCase,
-                            AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase,
-                            MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase,
-                            RegistrarAnimalComFotoUseCase registrarAnimalComFotoUseCase) {
-        this.registrarAnimalUseCase = registrarAnimalUseCase;
+    public AnimalController(
+            AnimalDTOMapper animalDTOMapper,
+            ListarAnimalUseCase listarAnimalUseCase,
+            BuscarAnimalPorIdService buscarAnimalPorIdUseCase,
+            DesativarAnimalUseCase desativarAnimalUseCase,
+            AtualizarDadosAnimalUseCase atualizarDadosAnimalUseCase,
+            MarcarAnimalComoPerdidoUseCase marcarAnimalComoPerdidoUseCase,
+            RegistrarAnimalComFotoUseCase registrarAnimalComFotoUseCase,
+            BuscarAnimalPorIDNaoAutenticadoUseCase buscarAnimalPorIDNaoAutenticadoUseCase) {
         this.animalDTOMapper = animalDTOMapper;
         this.listarAnimalUseCase = listarAnimalUseCase;
         this.buscarAnimalPorIdUseCase = buscarAnimalPorIdUseCase;
@@ -60,26 +60,25 @@ public class AnimalController {
         this.atualizarDadosAnimalUseCase = atualizarDadosAnimalUseCase;
         this.marcarAnimalComoPerdidoUseCase = marcarAnimalComoPerdidoUseCase;
         this.registrarAnimalComFotoUseCase = registrarAnimalComFotoUseCase;
+        this.buscarAnimalPorIDNaoAutenticadoUseCase = buscarAnimalPorIDNaoAutenticadoUseCase;
     }
 
-    //    @Operation(
-//            summary = "Registrar um novo animal/pet.",
-//            responses = {
-//                    @ApiResponse(responseCode = "201", description = "Animal registrado com sucesso.",
-//                            content = @Content(schema = @Schema(implementation = AnimalRespostaDTO.class))),
-//                    @ApiResponse(responseCode = "400", description = "Dados de registro inválidos.",
-//                            content = @Content(schema = @Schema(implementation = StandardError.class)))
-//            }
-//    )
-//    @PostMapping
-//    public ResponseEntity<AnimalRespostaDTO> registrarAnimal(
-//            @Parameter(description = "Objeto de transferencia com os dados atualizados do animal.")
-//            @Valid @RequestBody AnimalRegistrarDTO dto) {
-//        Animal animal = registrarAnimalUseCase.registrarAnimal(animalDTOMapper.registrarDtoToEntity(dto));
-//        return ResponseEntity.status(HttpStatus.CREATED).body(animalDTOMapper.domainToDto(animal));
-//    }
+    @Operation(
+            summary = "Registrar um novo animal com foto (opcional).",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Animal criado com sucesso.",
+                            content = @Content(schema = @Schema(implementation = AnimalRespostaDTO.class))),
+                    @ApiResponse(responseCode = "400", description = "Requisição inválida (JSON malformado ou campos ausentes).",
+                            content = @Content()),
+                    @ApiResponse(responseCode = "403", description = "Usuário não autenticado.", content = @Content()),
+            }
+    )
     @PostMapping(value = "/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AnimalRespostaDTO> registrarAnimalComFoto(
+            @Parameter(
+                    description = "JSON contendo os dados do animal.",
+                    example = "{ \"nome\": \"Tigo\", \"peso\": 15.5, \"raca\": \"vira-lata\", \"sexo\": \"F\", \"cor\": \"preto\" }"
+            )
             @RequestPart("dados") String dadosJson,
             @RequestPart(value = "foto", required = false) MultipartFile foto)
             throws JsonProcessingException {
@@ -177,5 +176,21 @@ public class AnimalController {
             @PathVariable UUID idAnimal) {
         Animal animalPerdido = marcarAnimalComoPerdidoUseCase.marcarComoPerdido(idAnimal);
         return ResponseEntity.ok().body(animalDTOMapper.domainToDto(animalPerdido));
+    }
+
+    @Operation(
+            summary = "Buscar informações do animal para o módulo de encontro.",
+            description = "Retorna os dados detalhados de um animal específico, utilizados para exibição em funcionalidades de 'encontro' ou perfis públicos.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Animal encontrado com o ID passado, e dados retornados com sucesso.",
+                            content = @Content(schema = @Schema(implementation = AnimalEncontroDTO.class)))
+            }
+    )
+    @GetMapping(value = "/informacoes-publicas/{idAnimal}")
+    public ResponseEntity<AnimalEncontroDTO> buscarDadosParaEncontro(
+            @Parameter(description = "ID do animal, que deve estar presente no QR code")
+            @PathVariable UUID idAnimal) {
+        Animal animal = buscarAnimalPorIDNaoAutenticadoUseCase.buscarAnimalPorIDSemTokenUseCase(AnimalId.of(idAnimal));
+        return ResponseEntity.ok().body(animalDTOMapper.entityToDtoEncontro(animal));
     }
 }
